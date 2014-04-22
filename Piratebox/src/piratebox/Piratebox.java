@@ -17,6 +17,8 @@ public class Piratebox {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        examen juego = new examen();
+        juego.setVisible(true);
     }
     
 }
