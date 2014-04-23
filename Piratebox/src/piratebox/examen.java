@@ -364,22 +364,22 @@
             if(bala != null){
                 if (bala.getPosX() > getWidth()) {
                     balaviva = false;
-                    bala = null;
+                    //bala = null;
                 }
                 
                 if (bala.getPosX() < 0) {
                     balaviva = false;
-                    bala = null;
+                    //bala = null;
                 }
                 
                 if (bala.getPosY() > getHeight()) {
                     balaviva = false;
-                    bala = null;
+                    //bala = null;
                 }
                 
                 if (bala.getPosY() < 0) {
                     balaviva = false;
-                    bala = null;
+                    //bala = null;
                 }
                 
             }
