@@ -20,6 +20,24 @@ public class Bala extends Base {
 	 */
     
          private static int conteo = 0;
+         private int direccion = 2;
+         private int velocidad = 15;
+         
+         public void setDireccion(int dir){
+             direccion = dir;
+         }
+         
+         public int getDireccion(){
+             return direccion;
+         }
+         
+         public void setVelocidad(int vel){
+             velocidad = vel;
+         }
+         
+         public int getVelocidad(){
+             return velocidad;  
+         }
          
          public static int getConteo()
          {
