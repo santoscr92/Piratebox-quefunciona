@@ -25,6 +25,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import java.util.LinkedList;
 import java.awt.Toolkit;
+import java.awt.Rectangle;
 
 public class examen extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
@@ -38,6 +39,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private Image howto;
     private Image settings;
     private Image menu;
+    private Image inicio;
     private Graphics dbg;       // Objeto grafico
     private SoundClip sonido;    // Objeto AudioClip
     private SoundClip rat;    // Objeto AudioClip
@@ -53,6 +55,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private int incX, incY;
     private long tiempoActual;
     private boolean move;
+    private boolean start;
     private double tiemporeal;
 
     //bala
@@ -107,6 +110,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
         this.setSize(1200, 700);
         move = false;
+        start = false;
         int posX = getWidth() / 2;    // posicion en x es un cuarto del applet
         int posY = getHeight() / 2;    // posicion en y es un cuarto del applet
         URL eURL = this.getClass().getResource("Imagenes/palmera.png");
@@ -145,6 +149,9 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
         URL settingsURL = this.getClass().getResource("Imagenes/settings.jpg");
         settings = Toolkit.getDefaultToolkit().createImage(settingsURL);
+        
+        URL startURL = this.getClass().getResource("Imagenes/pantalla_inicio.png");
+        inicio = Toolkit.getDefaultToolkit().createImage(startURL);
 
         //Se cargan los sonidos.
         sonido = new SoundClip("Sonidos/mice.wav");
@@ -228,7 +235,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
     public void run() {
         while (vidas > 0) {
-            if (!pausa) {
+            if (start && !pausa) {
                 actualiza();
                 checaColision();
             }
@@ -625,11 +632,22 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
     public void paint1(Graphics g) {
         if (vidas > 0) {
-            if (jack != null && davidj != null) {
+            if(!start){
+                    g.drawImage(inicio,0,0,null);
+                }
+            
+            
+            else if (jack != null && davidj != null) {
                 //Dibuja la imagen en la posicion actualizada
                 g.drawImage(fondo, 0, 0, null);
                 g.drawImage(jack.getImagenI(), jack.getPosX(), jack.getPosY(), this);
                 g.drawImage(davidj.getImagenI(), davidj.getPosX(), davidj.getPosY(), this);
+                
+                for (int i = 0; i < listapalmeras.size(); i++) {
+            Palmera palma = (Palmera) listapalmeras.get(i);
+            g.drawImage(palma.getImagenI(), palma.getPosX(), palma.getPosY(), this);
+        }
+                
 
             } else {
                 //Da un mensaje mientras se carga el dibujo
@@ -652,17 +670,16 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             g.drawImage(davidj.getImagenI(), davidj.getPosX(), davidj.getPosY(), this);
         }
 
-        for (int i = 0; i < listapalmeras.size(); i++) {
-            Palmera palma = (Palmera) listapalmeras.get(i);
-            g.drawImage(palma.getImagenI(), palma.getPosX(), palma.getPosY(), this);
-        }
+        
 
         g.setColor(Color.black);
         //g.drawString("Vidas: " + vidas, 10, 20);
+        if(start){
         g.drawString("Score: " + score, 70, 50);
         g.drawString("ammo: " + ammo, 600, 50);
         g.drawString("tiempo: " + (int) tiemporeal, 700, 50);
         g.drawString("Vida: " + vida, jack.getPosX(), jack.getPosY() - 10);
+        }
 
     }
 
@@ -731,11 +748,13 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {
+        Rectangle play= new Rectangle (337,583,198,69);
         x1 = e.getX();
         y1 = e.getY();
-        if (jack.tiene(x1, y1)) {
-            clic = true;
+        if (play.contains(x1, y1)) {
+            start = true;
         }
 
     }
