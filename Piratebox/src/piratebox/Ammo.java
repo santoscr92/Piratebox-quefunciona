@@ -9,7 +9,7 @@ package piratebox;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-public class Malo extends Base {
+public class Ammo extends Base {
 
 	/**
 	 * Metodo constructor que hereda los atributos de la clase <code>Base</code>.
@@ -32,34 +32,25 @@ public class Malo extends Base {
              conteo = a;
          }
          
-         private boolean llego;
          
-         public void setllego(boolean a){
-             llego=a;
-         }
-         public boolean getllego(){
-             return llego;
-         }
-         
-         
-	public Malo(int posX,int posY,int flechitas){
+	public Ammo(int posX,int posY,int flechitas){
 		
                 super(posX,posY,flechitas);	
                 
                 //
-                if(flechitas==1 ){
+                //if(flechitas==1 ){
                  Image bomba1,bomba2,bomba3;
-                 bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente1.png"));
-                 bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente2.png"));
-                 bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente3.png"));
+                 bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/ammo.png"));
+                 bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/ammo.png"));
+                 bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/ammo.png"));
                  
                  anim = new Animacion();
                  anim.sumaCuadro(bomba1, 100);
                  anim.sumaCuadro(bomba2, 100);
                  anim.sumaCuadro(bomba3, 100);
                  
-                }
-                
+                //}
+                /*
                 else if(flechitas==2){
                  Image bomba1,bomba2,bomba3;
                  bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mespalda1.png"));
@@ -97,6 +88,7 @@ public class Malo extends Base {
                  anim.sumaCuadro(bomba2, 100);
                  anim.sumaCuadro(bomba3, 100);
                 }
+                        */
                 
 	}
 }
