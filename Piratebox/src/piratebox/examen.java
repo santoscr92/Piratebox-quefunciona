@@ -40,6 +40,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private Image settings;
     private Image menu;
     private Image inicio;
+    private Image howdoi;
+    
     private Graphics dbg;       // Objeto grafico
     private SoundClip sonido;    // Objeto AudioClip
     private SoundClip rat;    // Objeto AudioClip
@@ -56,6 +58,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private long tiempoActual;
     private boolean move;
     private boolean start;
+    private boolean howt;
     private double tiemporeal;
 
     //bala
@@ -111,6 +114,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         this.setSize(1200, 700);
         move = false;
         start = false;
+        howt = false;
         int posX = getWidth() / 2;    // posicion en x es un cuarto del applet
         int posY = getHeight() / 2;    // posicion en y es un cuarto del applet
         URL eURL = this.getClass().getResource("Imagenes/palmera.png");
@@ -144,14 +148,16 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         URL menuURL = this.getClass().getResource("Imagenes/menu.jpg");
         menu = Toolkit.getDefaultToolkit().createImage(menuURL);
 
-        URL howtoURL = this.getClass().getResource("Imagenes/howto.jpg");
-        howto = Toolkit.getDefaultToolkit().createImage(howtoURL);
+        URL howtoURL = this.getClass().getResource("Imagenes/howto.png");
+        howdoi = Toolkit.getDefaultToolkit().createImage(howtoURL);
 
         URL settingsURL = this.getClass().getResource("Imagenes/settings.jpg");
         settings = Toolkit.getDefaultToolkit().createImage(settingsURL);
         
         URL startURL = this.getClass().getResource("Imagenes/pantalla_inicio.png");
         inicio = Toolkit.getDefaultToolkit().createImage(startURL);
+        
+        
 
         //Se cargan los sonidos.
         sonido = new SoundClip("Sonidos/mice.wav");
@@ -635,6 +641,9 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             if(!start){
                     g.drawImage(inicio,0,0,null);
                 }
+            else if(!howt){
+                    g.drawImage(howdoi,0,0,null);
+                }
             
             
             else if (jack != null && davidj != null) {
@@ -751,10 +760,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     @Override
     public void mouseClicked(MouseEvent e) {
         Rectangle play= new Rectangle (337,583,198,69);
+        Rectangle how = new Rectangle (483,627,207,53);
         x1 = e.getX();
         y1 = e.getY();
         if (play.contains(x1, y1)) {
             start = true;
+        }
+        else if (how.contains(x1, y1)) {
+            howt = true;
         }
 
     }
