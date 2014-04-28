@@ -641,12 +641,12 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             if(!start){
                     g.drawImage(inicio,0,0,null);
                 }
-            else if(!howt){
+            if(howt){
                     g.drawImage(howdoi,0,0,null);
                 }
             
             
-            else if (jack != null && davidj != null) {
+             if (start && (jack != null && davidj != null)) {
                 //Dibuja la imagen en la posicion actualizada
                 g.drawImage(fondo, 0, 0, null);
                 g.drawImage(jack.getImagenI(), jack.getPosX(), jack.getPosY(), this);
@@ -759,16 +759,6 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Rectangle play= new Rectangle (337,583,198,69);
-        Rectangle how = new Rectangle (483,627,207,53);
-        x1 = e.getX();
-        y1 = e.getY();
-        if (play.contains(x1, y1)) {
-            start = true;
-        }
-        else if (how.contains(x1, y1)) {
-            howt = true;
-        }
 
     }
 
@@ -787,6 +777,16 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        Rectangle play= new Rectangle (337,583,198,69);
+        Rectangle how = new Rectangle (483,583,207,53);
+        x1 = e.getX();
+        y1 = e.getY();
+        if (play.contains(x1, y1)) {
+            start = true;
+        }
+        else if (how.contains(x1, y1)) {
+            howt = true;
+        }
     }
 
     @Override
