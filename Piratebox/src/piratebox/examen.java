@@ -9,7 +9,8 @@ package piratebox;
  *
  * @author santoscr92
  */
-    //tonyStark
+// davidmartinez aka le Sheku1
+//tonyStark
 //thechosenjuan
 import javax.swing.JFrame;
 import java.applet.AudioClip;
@@ -41,7 +42,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private Image menu;
     private Image inicio;
     private Image howdoi;
-    
+
     private Graphics dbg;       // Objeto grafico
     private SoundClip sonido;    // Objeto AudioClip
     private SoundClip rat;    // Objeto AudioClip
@@ -49,6 +50,9 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private SoundClip teleport;
     private Bueno jack;    // Objeto de la clase Bueno
     private Malo davidj;    //Objeto de la clase Malo
+    private Ship ship;
+    private Ship ship2;
+    private Ship ship3;
     private int ancho;  //Ancho del jackimage
     private int alto;   //Alto del jackimage
     private ImageIcon jackimage; // Imagen del jackimage.
@@ -61,6 +65,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean howt;
     private boolean back;
     private double tiemporeal;
+    private SoundClip shot;
+    private SoundClip guncock;
 
     //bala
     private Bala bala; //objeto bala
@@ -73,8 +79,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     //malos
     private int x1; // posicion del mouse en x
     private int y1; // posicion del mouse en y
-    private int vidas = 1000;
-    private LinkedList lista;
+    private int vidas = 5;
+    private LinkedList lista, listo;
     private int score = 0;
     private boolean pausa = false;
     private boolean bsettings = false;
@@ -118,14 +124,15 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         howt = false;
         back = false;
         int posX = getWidth() / 2;    // posicion en x es un cuarto del applet
-        int posY = getHeight() / 2;    // posicion en y es un cuarto del applet
-        URL eURL = this.getClass().getResource("Imagenes/palmera.png");
+        int posY = getHeight() / 2;    // posicion en y es un cuarto del applet  
+        guncock = new SoundClip("Sonidos/guncock.wav");
+        shot = new SoundClip("Sonidos/shot.wav");
         jack = new Bueno(posX, posY, 1);
         URL bURL = this.getClass().getResource("Imagenes/balab.png");
-            //jack.setPosX((int) (getWidth()/2));
+        //jack.setPosX((int) (getWidth()/2));
         //jack.setPosY(getHeight());
         int posrX = (int) (Math.random() * (getWidth() / 4)) + getWidth() / 2;    //posision x es tres cuartos del applet
-        int posrY = 0;    //posision y es tres cuartos del applet
+        int posrY = 100;    //posision y es tres cuartos del applet
         URL rURL = this.getClass().getResource("Imagenes/muerto.png");
         davidj = new Malo(posrX, posrY, 1);
         davidj.setPosX(davidj.getPosX() - davidj.getAncho());
@@ -138,8 +145,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         URL goURL = this.getClass().getResource("Imagenes/palmera.png");
         gameover = Toolkit.getDefaultToolkit().getImage(goURL);
 
-        URL URL = this.getClass().getResource("Imagenes/muerto.png");
-        gameover = Toolkit.getDefaultToolkit().getImage(goURL);
+        URL geURL = this.getClass().getResource("Imagenes/gameover.png");
+        gameover = Toolkit.getDefaultToolkit().getImage(geURL);
 
         URL fondoURL = this.getClass().getResource("Imagenes/fondo.jpg");
         fondo = Toolkit.getDefaultToolkit().createImage(fondoURL);
@@ -155,25 +162,40 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
         URL settingsURL = this.getClass().getResource("Imagenes/settings.jpg");
         settings = Toolkit.getDefaultToolkit().createImage(settingsURL);
-        
+
         URL startURL = this.getClass().getResource("Imagenes/pantalla_inicio.png");
         inicio = Toolkit.getDefaultToolkit().createImage(startURL);
-        
-        
 
         //Se cargan los sonidos.
         sonido = new SoundClip("Sonidos/mice.wav");
         bomb = new SoundClip("Sonidos/Explosion.wav");
         teleport = new SoundClip("Sonidos/teleport.wav");
 
-            //jackimage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(eURL));
+        //jackimage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(eURL));
         //ancho = jackimage.getIconWidth();
         //alto = jackimage.getIconHeight();
         //ancho2 = davidj.getIconWidth();
         // alto2 = davidj.getIconHeight();
         addMouseListener(this);
         addMouseMotionListener(this);
+        //creamos los 3 barcos
+        int possX1 = 240;
+        int possY1 = 100;
+        ship = new Ship(possX1, possY1, 1);
+        ship.setPosX(ship.getPosX() - ship.getAncho());
+        ship.setPosY(ship.getPosY() - ship.getAlto());
+        int possX2 = 735;
+        int possY2 = 110;
+        ship2 = new Ship(possX2, possY2, 1);
+        ship2.setPosX(ship2.getPosX() - ship2.getAncho());
+        ship2.setPosY(ship2.getPosY() - ship2.getAlto());
+        int possX3 = 1100;
+        int possY3 = 105;
+        ship3 = new Ship(possX3, possY3, 1);
+        ship3.setPosX(ship3.getPosX() - ship3.getAncho());
+        ship3.setPosY(ship3.getPosY() - ship3.getAlto());
 
+        // creamos los malos
         lista = new LinkedList();
         for (int k = 0; k < 12; k++) {
 
@@ -220,7 +242,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 listapalmeras.addLast(palma);
             } else if (k == 3) {
                 palma = new Palmera(1030, 570, 1);
-                    //palma.setPosX(palma.getPosX() - palma.getAncho());
+                //palma.setPosX(palma.getPosX() - palma.getAncho());
                 //palma.setPosY(palma.getPosY() - palma.getAlto());
                 listapalmeras.addLast(palma);
             }
@@ -228,7 +250,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         }
 
         jackcurrentstate = 2;
-        vida = 200;
+        vida = 5;
         espaciovida = false;
         velocidadbalax = 15;
         velocidadbalay = 15;
@@ -290,12 +312,15 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
-            //objetoammo.actualizaAnimacion(tiempoActual);
+        //objetoammo.actualizaAnimacion(tiempoActual);
         //actualizacion de jack si esta en movimiento
         if (move == true) {
             jack.actualizaAnimacion(tiempoActual);
         }
-
+        //actualizacion de animacion de barcos
+        ship.actualizaAnimacion(tiempoActual);
+        ship2.actualizaAnimacion(tiempoActual);
+        ship3.actualizaAnimacion(tiempoActual);
         //actualizacion de animaicion de malos
         for (int x = 0; x < lista.size(); x++) {
             Malo davidj = (Malo) lista.get(x);
@@ -345,7 +370,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     if (davidj.getPosY() == 164) {
                         davidj.setllego(true);
                     }
- 
+
                 }
             }
             if (i == 4 || i == 5 || i == 6 || i == 7) {
@@ -371,27 +396,27 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 }
             }
         }
-        
+
         // actualiza posicion de los malos
         // una vez que cruzo el puente se empiezan a actualizar
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < lista.size(); i++) {
             if (i == 0 || i == 1 || i == 2 || i == 3) {
                 Malo davidj = (Malo) lista.get(i);
                 if (davidj.getllego()) {
- 
+
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
                         davidj.setPosX(davidj.getPosX() + incX);
                     } else {
- 
+
                         incX = -1;
                         davidj.setFlechitas(4);
                         davidj.setPosX(davidj.getPosX() + incX);
                     }
- 
+
                     if (jack.getPosY() > davidj.getPosY()) {
- 
+
                         incY = 1;
                         davidj.setFlechitas(1);
                         davidj.setPosY(davidj.getPosY() + incY);
@@ -401,7 +426,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                         davidj.setPosY(davidj.getPosY() + incY);
                     }
                 }
- 
+
             }
             if (i == 4 || i == 5 || i == 6 || i == 7) {
                 Malo davidj = (Malo) lista.get(i);
@@ -411,14 +436,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                         davidj.setFlechitas(3);
                         davidj.setPosX(davidj.getPosX() + incX);
                     } else {
- 
+
                         incX = -1;
                         davidj.setFlechitas(4);
                         davidj.setPosX(davidj.getPosX() + incX);
                     }
- 
+
                     if (jack.getPosY() > davidj.getPosY()) {
- 
+
                         incY = 1;
                         davidj.setFlechitas(1);
                         davidj.setPosY(davidj.getPosY() + incY);
@@ -437,14 +462,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                         davidj.setFlechitas(3);
                         davidj.setPosX(davidj.getPosX() + incX);
                     } else {
- 
+
                         incX = -1;
                         davidj.setFlechitas(4);
                         davidj.setPosX(davidj.getPosX() + incX);
                     }
- 
+
                     if (jack.getPosY() > davidj.getPosY()) {
- 
+
                         incY = 1;
                         davidj.setFlechitas(1);
                         davidj.setPosY(davidj.getPosY() + incY);
@@ -454,12 +479,9 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                         davidj.setPosY(davidj.getPosY() + incY);
                     }
                 }
- 
+
             }
- 
- 
- 
- 
+
         }
 
         //crea el objeto ammo
@@ -481,7 +503,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 bala = new Bala(jack.getPosX() + 10, jack.getPosY() + jack.getAlto(), jackcurrentstate);
             }
             bala.setDireccion(jackcurrentstate);
-
+            shot.play();
             bal = false;
             balaviva = true;
 
@@ -550,60 +572,58 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
         for (int i = 0; i < lista.size(); i++) {
             Malo davidj = (Malo) lista.get(i);
- 
+
             if (jack.intersecta(davidj)) {
- 
+
                 bomb.play();    //sonido al colisionar
                 vida--;
- 
-                davidj.setllego(false);
- 
+                lista.remove();
+
                 //Los asteroides aparecen en un rando random
                 randomo = ((int) (Math.random() * (4 - 1) + 1));
                 if (randomo == 1) {
                     random = ((int) ((Math.random() * (129 - 76)) + 76));
                     davidj.setPosX(random);
-                    davidj.setPosY(0);
+                    davidj.setPosY(110);
                 }
                 if (randomo == 2) {
                     random2 = ((int) ((Math.random() * (632 - 576)) + 576));
                     davidj.setPosX(random2);
-                    davidj.setPosY(0);
+                    davidj.setPosY(110);
                 }
                 if (randomo == 3) {
                     random3 = ((int) ((Math.random() * (1007 - 948)) + 948));
                     davidj.setPosX(random3);
-                    davidj.setPosY(0);
+                    davidj.setPosY(110);
                 }
             }
             if (bala != null) {
                 if (bala.intersecta(davidj)) {
- 
+
                     score += 5;
                     //Los asteroides aparecen en un rando random
- 
- 
+
                     bala = null;
                     balaviva = false;
                     movbala = false;
-                    davidj.setllego(false);
+                    lista.remove();
                     randomo = ((int) (Math.random() * (4 - 1) + 1));
                     if (randomo == 1) {
                         random = ((int) ((Math.random() * (129 - 76)) + 76));
                         davidj.setPosX(random);
-                        davidj.setPosY(0);
+                        davidj.setPosY(110);
                     }
                     if (randomo == 2) {
                         random2 = ((int) ((Math.random() * (632 - 576)) + 576));
                         davidj.setPosX(random2);
-                        davidj.setPosY(0);
+                        davidj.setPosY(110);
                     }
                     if (randomo == 3) {
                         random3 = ((int) ((Math.random() * (1007 - 948)) + 948));
                         davidj.setPosX(random3);
-                        davidj.setPosY(0);
+                        davidj.setPosY(110);
                     }
- 
+
                 }
             }
 
@@ -614,6 +634,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 ammo += 15;
                 objetoammo = null;
                 ammopalma = false;
+                guncock.play();
             }
         }
 
@@ -639,57 +660,54 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void paint1(Graphics g) {
-        if (vidas > 0) {
-            if(!start){
-                    g.drawImage(inicio,0,0,null);
-                }
-            if(howt){
-                    g.drawImage(howdoi,0,22,null);
-                }
-            
-            
-             if (start && (jack != null && davidj != null)) {
+        if (vida > 0) {
+            if (!start) {
+                g.drawImage(inicio, 0, 0, null);
+
+            }
+            if (howt) {
+                g.drawImage(howdoi, 0, 22, null);
+            }
+
+            if (start && (jack != null && davidj != null && ship != null && ship2 != null && ship3 != null)) {
                 //Dibuja la imagen en la posicion actualizada
                 g.drawImage(fondo, 0, 0, null);
                 g.drawImage(jack.getImagenI(), jack.getPosX(), jack.getPosY(), this);
-                g.drawImage(davidj.getImagenI(), davidj.getPosX(), davidj.getPosY(), this);
-                
+                g.drawImage(ship.getImagenI(), ship.getPosX(), ship.getPosY(), this);
+                g.drawImage(ship2.getImagenI(), ship2.getPosX(), ship2.getPosY(), this);
+                g.drawImage(ship3.getImagenI(), ship3.getPosX(), ship3.getPosY(), this);
+
                 for (int i = 0; i < listapalmeras.size(); i++) {
-            Palmera palma = (Palmera) listapalmeras.get(i);
-            g.drawImage(palma.getImagenI(), palma.getPosX(), palma.getPosY(), this);
-        }
-                
+                    Palmera palma = (Palmera) listapalmeras.get(i);
+                    g.drawImage(palma.getImagenI(), palma.getPosX(), palma.getPosY(), this);
+                }
+                for (int i = 0; i < lista.size(); i++) {
+                    Malo davidj = (Malo) lista.get(i);
+                    g.drawImage(davidj.getImagenI(), davidj.getPosX(), davidj.getPosY(), this);
+                }
+                if (objetoammo != null) {
+                    g.drawImage(objetoammo.getImagenI(), objetoammo.getPosX(), objetoammo.getPosY(), this);
+                }
+                if (bala != null) {
+                    g.drawImage(bala.getImagenI(), bala.getPosX(), bala.getPosY(), this);
+                }
 
             } else {
                 //Da un mensaje mientras se carga el dibujo
                 g.drawString("No se cargo la imagen..", 20, 20);
             }
         } else {
+            setBackground(Color.black);
+            pausa = true;
             g.drawImage(gameover, 400, 150, this);
         }
 
-        if (objetoammo != null) {
-            g.drawImage(objetoammo.getImagenI(), objetoammo.getPosX(), objetoammo.getPosY(), this);
-        }
-
-        if (bala != null) {
-            g.drawImage(bala.getImagenI(), bala.getPosX(), bala.getPosY(), this);
-        }
-
-        for (int i = 0; i < lista.size(); i++) {
-            Malo davidj = (Malo) lista.get(i);
-            g.drawImage(davidj.getImagenI(), davidj.getPosX(), davidj.getPosY(), this);
-        }
-
-        
-
-        g.setColor(Color.black);
         //g.drawString("Vidas: " + vidas, 10, 20);
-        if(start){
-        g.drawString("Score: " + score, 70, 50);
-        g.drawString("ammo: " + ammo, 600, 50);
-        g.drawString("tiempo: " + (int) tiemporeal, 700, 50);
-        g.drawString("Vida: " + vida, jack.getPosX(), jack.getPosY() - 10);
+        if (start) {
+            g.drawString("Score: " + score, 250, 50);
+            g.drawString("ammo: " + ammo, 400, 50);
+            g.drawString("tiempo: " + (int) tiemporeal, 780, 50);
+            g.drawString("Vida: " + vida, jack.getPosX(), jack.getPosY() - 10);
         }
 
     }
@@ -779,22 +797,21 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        Rectangle play= new Rectangle (337,583,198,69);
-        Rectangle how = new Rectangle (576,583,246,69);
+        Rectangle play = new Rectangle(337, 583, 198, 69);
+        Rectangle how = new Rectangle(576, 583, 246, 69);
         x1 = e.getX();
         y1 = e.getY();
         if (play.contains(x1, y1)) {
             start = true;
-        }
-        else if (how.contains(x1, y1)) {
+        } else if (how.contains(x1, y1)) {
             howt = true;
         }
-        if(howt){
-            Rectangle atras = new Rectangle(483,627,207,53);
-            if (atras.contains(x1, y1)){
+        if (howt) {
+            Rectangle atras = new Rectangle(483, 627, 207, 53);
+            if (atras.contains(x1, y1)) {
                 howt = false;
             }
-                
+
         }
     }
 
