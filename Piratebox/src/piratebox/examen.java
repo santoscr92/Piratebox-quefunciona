@@ -17,6 +17,20 @@ import java.applet.AudioClip;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
@@ -67,6 +81,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private double tiemporeal;
     private SoundClip shot;
     private SoundClip guncock;
+    private boolean muerto,nootravez;
 
     //bala
     private Bala bala; //objeto bala
@@ -108,6 +123,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean llego = false;
     private int random2;
     private int random3;
+    
+    //variables para el manejo de archivos
+    private Vector vec;    // Objeto vector para agregar el puntaje.
+    private String nombreArchivo;    //Nombre del archivo.
+    private String[] arr;    //Arreglo del archivo divido.
+ 
+    private JFrameScore jframeScore;    //Frame para desplegar el puntaje.
+    private JList listaScore;    //Lista para desplegar el puntaje.
 
     public examen() {
         init();
@@ -166,6 +189,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         URL startURL = this.getClass().getResource("Imagenes/pantalla_inicio.png");
         inicio = Toolkit.getDefaultToolkit().createImage(startURL);
 
+        //Se crea vector
+        nombreArchivo = "Puntaje.txt";
+        vec = new Vector();
+        
         //Se cargan los sonidos.
         sonido = new SoundClip("Sonidos/mice.wav");
         bomb = new SoundClip("Sonidos/Explosion.wav");
@@ -254,7 +281,21 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         espaciovida = false;
         velocidadbalax = 15;
         velocidadbalay = 15;
+        
+        try {
+ 
+            leeArchivo();    //lee el contenido del archivo
+ 
+        } catch (IOException e) {
+ 
+            System.out.println("Error en " + e.toString());
+        }
+        
     }
+    
+    
+    
+    
 
     public void start() {
         // Declaras un hilo
@@ -282,6 +323,39 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void actualiza() {
+        if(vida==1){
+            Muerto();
+            vida--;
+        }
+        /*creaJFrame();
+ 
+        if (vida <= 1) {
+        // pide el nombre de usuario
+            
+            vida = 4;
+            muerto = true;
+ 
+            String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
+            JOptionPane.showMessageDialog(null,
+                    "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
+                    JOptionPane.PLAIN_MESSAGE);
+                //reinicio = true;
+ 
+            try {
+ 
+                      //leeArchivo();    //lee el contenido del archivo
+                //Agrega el contenido del nuevo puntaje al vector.
+                vec.add(new Puntaje(nombre, score));
+                ordenaVector();
+                //Graba el vector en el archivo.
+                grabaArchivo();
+ 
+            } catch (IOException e) {
+ 
+                System.out.println("Error en " + e.toString());
+            }
+ 
+        }*/
 
         //para que el ammo salga cada 15 segundos
         if (((int) tiemporeal) % 15 == 0) {
@@ -624,6 +698,31 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         }
 
     }
+    
+    
+    public void Muerto(){
+        creaJFrame();
+        
+       String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
+            JOptionPane.showMessageDialog(null,
+                    "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
+                    JOptionPane.PLAIN_MESSAGE);
+                //reinicio = true;
+ 
+            try {
+ 
+                      //leeArchivo();    //lee el contenido del archivo
+                //Agrega el contenido del nuevo puntaje al vector.
+                vec.add(new Puntaje(nombre, score));
+                ordenaVector();
+                //Graba el vector en el archivo.
+                grabaArchivo();
+ 
+            } catch (IOException e) {
+ 
+                System.out.println("Error en " + e.toString());
+            }
+    }
 
     public void paint(Graphics g) {
         // Inicializan el DoubleBuffer
@@ -645,7 +744,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void paint1(Graphics g) {
-        if (vidas > 0) {
+        if (vida > 0) {
             if (!start) {
                 g.drawImage(inicio, 0, 0, null);
 
@@ -685,6 +784,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             setBackground(Color.black);
             pausa = true;
             g.drawImage(gameover, 400, 150, this);
+            /*if(!nootravez){
+                Muerto();
+                nootravez = true;
+            }*/
         }
 
         //g.drawString("Vidas: " + vidas, 10, 20);
@@ -696,6 +799,128 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         }
 
     }
+    
+     /**
+     * Metodo que lee a informacion de un archivo y lo agrega a un vector.
+     *
+     * @throws IOException
+     */
+    public void leeArchivo() throws IOException {
+ 
+        BufferedReader fileIn;
+        try {
+            fileIn = new BufferedReader(new FileReader(nombreArchivo));
+        } catch (FileNotFoundException e) {
+            File puntos = new File(nombreArchivo);
+            PrintWriter fileOut = new PrintWriter(puntos);
+            //fileOut.println("100,demo");
+            fileOut.println("");
+            fileOut.close();
+            fileIn = new BufferedReader(new FileReader(nombreArchivo));
+        }
+        String dato = fileIn.readLine();
+ 
+        if (!dato.equals("")) {
+            while (dato != null) {
+                arr = dato.split(",");
+                int num = (Integer.parseInt(arr[0]));
+                String nom = arr[1];
+                vec.add(new Puntaje(nom, num));
+                dato = fileIn.readLine();
+            }
+        }
+        fileIn.close();
+ 
+        /*
+         try
+         {
+         BufferedReader fileIn;
+         try {
+         fileIn = new BufferedReader(new FileReader(nombreArchivo));
+         } catch (FileNotFoundException e){
+         File archivo = new File(nombreArchivo);
+         PrintWriter fileOut = new PrintWriter(archivo);
+         fileOut.println("50.0,50.0,45.0,.02,5,.02,50,50,200,200");
+         fileOut.close();
+         fileIn = new BufferedReader(new FileReader(nombreArchivo));
+         }
+         String dato = fileIn.readLine();
+         arr = dato.split (",");
+         velocidadx = (Double.parseDouble(arr[0]));
+         velocidady = (Double.parseDouble(arr[1]));
+         angulo = (Double.parseDouble(arr[2]));
+         tiempo = (Double.parseDouble(arr[3]));
+         vidas = (Integer.parseInt(arr[4]));
+         //dificultad = (Double.parseDouble(arr[5]));
+         magikarp.setPosX((Integer.parseInt(arr[5])));
+         magikarp.setPosY((Integer.parseInt(arr[6])));
+         pipeup.setPosX((Integer.parseInt(arr[7])));
+         pipeup.setPosY((Integer.parseInt(arr[8])));
+         //perdida = (Integer.parseInt(arr[10]));
+         //pico = (Boolean.parseBoolean(arr[11]));
+               
+         fileIn.close();
+         }
+         catch(IOException ioe) {
+         velocidadx = 0;
+         velocidady = 0;
+         angulo = 0;
+         tiempo = 0;
+         vidas = 0;
+         //dificultad = 0;
+         magikarp.setPosX(0);
+         magikarp.setPosY(0);
+         pipeup.setPosX(0);
+         pipeup.setPosY(0);
+         //perdida = 0;
+         //pico = false;
+             
+             
+         }
+       
+         */
+    }
+ 
+    /**
+     * Metodo que agrega la informacion del vector al archivo.
+     *
+     * @throws IOException
+     */
+    public void grabaArchivo() throws IOException {
+ 
+        //if(guardar) {
+        PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
+        for (int i = 0; i < vec.size(); i++) {
+            Puntaje x;
+            x = (Puntaje) vec.get(i);
+            fileOut.println(x.toString());
+        }
+        fileOut.close();
+        /*
+         PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
+         fileOut.println(""+velocidadx+","+velocidady+","+angulo+","+tiempo+","+vidas+","+magikarp.getPosX()+","+magikarp.getPosY()+","+pipeup.getPosX()+","+pipeup.getPosY());
+         fileOut.close();
+         */
+           // guardar = false;
+        //}
+ 
+    }
+ 
+    /**
+     * Metodo que ordena el vector
+     */
+    public void ordenaVector() {
+        for (int i = 0; i < vec.size() - 1; i++) {
+            for (int j = i; j < vec.size(); j++) {
+                if (((Puntaje) vec.get(i)).getPuntaje() < ((Puntaje) vec.get(j)).getPuntaje()) {
+                    Puntaje p = (Puntaje) vec.get(i);
+                    vec.set(i, vec.get(j));
+                    vec.set(j, p);
+                }
+            }
+        }
+    }
+    
 
     public void keyPressed(KeyEvent e) {
 
@@ -712,6 +937,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                bal = true;
            }
             
+        }
+        
+        if (e.getKeyCode() == KeyEvent.VK_N) //Presiono flecha arriba
+        {
+            jframeScore.setVisible(true);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_UP) //Presiono flecha arriba
@@ -819,5 +1049,34 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
          clic = true;
          }*/
     }
+    
+    /**
+     * Metodo que crea el frame para desplegar el score.
+     */
+    public void creaJFrame() {
+        jframeScore = new JFrameScore();
+    }
+ 
+    private class JFrameScore extends JFrame {
+ 
+        public JFrameScore() {
+            JButton boton = new JButton("SALIR");
+            listaScore = new JList(vec);
+            add(listaScore, BorderLayout.CENTER);
+            add(boton, BorderLayout.SOUTH);
+            setSize(200, 500);
+            boton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                                                //pause = false;
+                    //musica.play();
+                    setVisible(false);
+                    repaint();
+                }
+            });
+ 
+        }
+    }
+    
+    
 
 }
