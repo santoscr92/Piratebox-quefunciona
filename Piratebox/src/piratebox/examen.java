@@ -54,6 +54,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private Image menu;
     private Image inicio;
     private Image howdoi;
+    private SoundClip cancionF; //Cancion de Fondo
 
     private Graphics dbg;       // Objeto grafico
     private SoundClip sonido;    // Objeto AudioClip
@@ -70,7 +71,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private ImageIcon jackimage; // Imagen del jackimage.
     private boolean clic = false;
     private int random;
-    private int incX, incY,inx,iny;
+    private int incX, incY, inx, iny;
     private long tiempoActual;
     private boolean move;
     private boolean start;
@@ -151,6 +152,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         shot = new SoundClip("Sonidos/shot.wav");
         jack = new Bueno(posX, posY, 1);
         URL bURL = this.getClass().getResource("Imagenes/balab.png");
+        cancionF = new SoundClip("Sonidos/piratesong.wav");
         //jack.setPosX((int) (getWidth()/2));
         //jack.setPosY(getHeight());
         int posrX = (int) (Math.random() * (getWidth() / 4)) + getWidth() / 2;    //posision x es tres cuartos del applet
@@ -196,6 +198,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         sonido = new SoundClip("Sonidos/mice.wav");
         bomb = new SoundClip("Sonidos/Explosion.wav");
         teleport = new SoundClip("Sonidos/teleport.wav");
+        cancionF.setLooping(true);
+        cancionF.play();
 
         //jackimage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(eURL));
         //ancho = jackimage.getIconWidth();
@@ -300,7 +304,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void run() {
-        while (vidas > 0) {
+        while (vida > 0) {
             if (start && !pausa) {
                 actualiza();
                 checaColision();
@@ -448,23 +452,23 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
-                        davidj.setPosX(davidj.getPosX() + incX+inx);                        
+                        davidj.setPosX(davidj.getPosX() + incX + inx);
                     } else {
 
                         incX = -1;
                         davidj.setFlechitas(4);
-                        davidj.setPosX(davidj.getPosX() + incX+inx);
+                        davidj.setPosX(davidj.getPosX() + incX + inx);
                     }
 
                     if (jack.getPosY() > davidj.getPosY()) {
 
                         incY = 1;
                         davidj.setFlechitas(1);
-                        davidj.setPosY(davidj.getPosY() + incY+iny);
+                        davidj.setPosY(davidj.getPosY() + incY + iny);
                     } else {
                         incY = -1;
                         davidj.setFlechitas(2);
-                        davidj.setPosY(davidj.getPosY() + incY+iny);
+                        davidj.setPosY(davidj.getPosY() + incY + iny);
                     }
                 }
 
@@ -477,23 +481,23 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
-                        davidj.setPosX(davidj.getPosX() + incX+inx);
+                        davidj.setPosX(davidj.getPosX() + incX + inx);
                     } else {
 
                         incX = -1;
                         davidj.setFlechitas(4);
-                        davidj.setPosX(davidj.getPosX() + incX+inx);
+                        davidj.setPosX(davidj.getPosX() + incX + inx);
                     }
 
                     if (jack.getPosY() > davidj.getPosY()) {
 
                         incY = 1;
                         davidj.setFlechitas(1);
-                        davidj.setPosY(davidj.getPosY() + incY+iny);
+                        davidj.setPosY(davidj.getPosY() + incY + iny);
                     } else {
                         incY = -1;
                         davidj.setFlechitas(2);
-                        davidj.setPosY(davidj.getPosY() + incY+iny);
+                        davidj.setPosY(davidj.getPosY() + incY + iny);
                     }
                 }
             }
@@ -505,23 +509,23 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
-                        davidj.setPosX(davidj.getPosX() + incX+inx);
+                        davidj.setPosX(davidj.getPosX() + incX + inx);
                     } else {
 
                         incX = -1;
                         davidj.setFlechitas(4);
-                        davidj.setPosX(davidj.getPosX() + incX+inx);
+                        davidj.setPosX(davidj.getPosX() + incX + inx);
                     }
 
                     if (jack.getPosY() > davidj.getPosY()) {
 
                         incY = 1;
                         davidj.setFlechitas(1);
-                        davidj.setPosY(davidj.getPosY() + incY+iny);
+                        davidj.setPosY(davidj.getPosY() + incY + iny);
                     } else {
                         incY = -1;
                         davidj.setFlechitas(2);
-                        davidj.setPosY(davidj.getPosY() + incY+iny);
+                        davidj.setPosY(davidj.getPosY() + incY + iny);
                     }
                 }
 
@@ -742,6 +746,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 if (bala != null) {
                     g.drawImage(bala.getImagenI(), bala.getPosX(), bala.getPosY(), this);
                 }
+                g.drawString("Score: " + score, 250, 50);
+                g.drawString("ammo: " + ammo, 400, 50);
+                g.drawString("tiempo: " + (int) tiemporeal, 780, 50);
+                g.drawString("Vida: " + (vida - 1), jack.getPosX(), jack.getPosY() - 10);
 
             } else {
                 //Da un mensaje mientras se carga el dibujo
@@ -751,20 +759,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             setBackground(Color.black);
             pausa = true;
             g.drawImage(gameover, 150, 0, this);
-            /*if(!nootravez){
-             Muerto();
-             nootravez = true;
-             }*/
         }
-
-        //g.drawString("Vidas: " + vidas, 10, 20);
-        if (start) {
-            g.drawString("Score: " + score, 250, 50);
-            g.drawString("ammo: " + ammo, 400, 50);
-            g.drawString("tiempo: " + (int) tiemporeal, 780, 50);
-            g.drawString("Vida: " + (vida - 1), jack.getPosX(), jack.getPosY() - 10);
-        }
-
     }
 
     /**
@@ -797,55 +792,6 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             }
         }
         fileIn.close();
-
-        /*
-         try
-         {
-         BufferedReader fileIn;
-         try {
-         fileIn = new BufferedReader(new FileReader(nombreArchivo));
-         } catch (FileNotFoundException e){
-         File archivo = new File(nombreArchivo);
-         PrintWriter fileOut = new PrintWriter(archivo);
-         fileOut.println("50.0,50.0,45.0,.02,5,.02,50,50,200,200");
-         fileOut.close();
-         fileIn = new BufferedReader(new FileReader(nombreArchivo));
-         }
-         String dato = fileIn.readLine();
-         arr = dato.split (",");
-         velocidadx = (Double.parseDouble(arr[0]));
-         velocidady = (Double.parseDouble(arr[1]));
-         angulo = (Double.parseDouble(arr[2]));
-         tiempo = (Double.parseDouble(arr[3]));
-         vidas = (Integer.parseInt(arr[4]));
-         //dificultad = (Double.parseDouble(arr[5]));
-         magikarp.setPosX((Integer.parseInt(arr[5])));
-         magikarp.setPosY((Integer.parseInt(arr[6])));
-         pipeup.setPosX((Integer.parseInt(arr[7])));
-         pipeup.setPosY((Integer.parseInt(arr[8])));
-         //perdida = (Integer.parseInt(arr[10]));
-         //pico = (Boolean.parseBoolean(arr[11]));
-               
-         fileIn.close();
-         }
-         catch(IOException ioe) {
-         velocidadx = 0;
-         velocidady = 0;
-         angulo = 0;
-         tiempo = 0;
-         vidas = 0;
-         //dificultad = 0;
-         magikarp.setPosX(0);
-         magikarp.setPosY(0);
-         pipeup.setPosX(0);
-         pipeup.setPosY(0);
-         //perdida = 0;
-         //pico = false;
-             
-             
-         }
-       
-         */
     }
 
     /**
@@ -863,13 +809,6 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             fileOut.println(x.toString());
         }
         fileOut.close();
-        /*
-         PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
-         fileOut.println(""+velocidadx+","+velocidady+","+angulo+","+tiempo+","+vidas+","+magikarp.getPosX()+","+magikarp.getPosY()+","+pipeup.getPosX()+","+pipeup.getPosY());
-         fileOut.close();
-         */
-        // guardar = false;
-        //}
 
     }
 
@@ -1004,16 +943,6 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void mouseDragged(MouseEvent e) {
-        /*
-         x1 = e.getX();
-         y1 = e.getY();
- 
-         clic = true;
-         */
-        /*
-         if(jack.tiene(x1, y1)) {
-         clic = true;
-         }*/
     }
 
     /**
