@@ -783,7 +783,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         } else {
             setBackground(Color.black);
             pausa = true;
-            g.drawImage(gameover, 400, 150, this);
+            g.drawImage(gameover, 0, 0, this);
             /*if(!nootravez){
                 Muerto();
                 nootravez = true;
