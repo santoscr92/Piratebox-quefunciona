@@ -45,8 +45,6 @@ import java.awt.Rectangle;
 public class examen extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = 1L;
-    private final int MIN = -6;    //Minimo al generar un numero al azar.
-    private final int MAX = 7;    //Maximo al generar un numero al azar.
     private Image dbImage;      // Imagen a proyectar  
     private Image gameover;
     private Image fondo;
@@ -72,7 +70,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private ImageIcon jackimage; // Imagen del jackimage.
     private boolean clic = false;
     private int random;
-    private int incX, incY;
+    private int incX, incY,inx,iny;
     private long tiempoActual;
     private boolean move;
     private boolean start;
@@ -81,7 +79,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private double tiemporeal;
     private SoundClip shot;
     private SoundClip guncock;
-    private boolean muerto,nootravez;
+    private boolean muerto, nootravez;
 
     //bala
     private Bala bala; //objeto bala
@@ -90,7 +88,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean bal, balaviva, movbala;
     private int velocidadbalax, velocidadbalay;
     private int randomo;
-
+    private final int MIN = -5;    //Minimo al generar un numero al azar.
+    private final int MAX = 6;    //Maximo al generar un numero al azar.
     //malos
     private int x1; // posicion del mouse en x
     private int y1; // posicion del mouse en y
@@ -123,12 +122,12 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean llego = false;
     private int random2;
     private int random3;
-    
+
     //variables para el manejo de archivos
     private Vector vec;    // Objeto vector para agregar el puntaje.
     private String nombreArchivo;    //Nombre del archivo.
     private String[] arr;    //Arreglo del archivo divido.
- 
+
     private JFrameScore jframeScore;    //Frame para desplegar el puntaje.
     private JList listaScore;    //Lista para desplegar el puntaje.
 
@@ -192,7 +191,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         //Se crea vector
         nombreArchivo = "Puntaje.txt";
         vec = new Vector();
-        
+
         //Se cargan los sonidos.
         sonido = new SoundClip("Sonidos/mice.wav");
         bomb = new SoundClip("Sonidos/Explosion.wav");
@@ -281,21 +280,17 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         espaciovida = false;
         velocidadbalax = 15;
         velocidadbalay = 15;
-        
+
         try {
- 
+
             leeArchivo();    //lee el contenido del archivo
- 
+
         } catch (IOException e) {
- 
+
             System.out.println("Error en " + e.toString());
         }
-        
+
     }
-    
-    
-    
-    
 
     public void start() {
         // Declaras un hilo
@@ -323,39 +318,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void actualiza() {
-        if(vida==1){
+        if (vida == 1) {
             Muerto();
             vida--;
         }
-        /*creaJFrame();
- 
-        if (vida <= 1) {
-        // pide el nombre de usuario
-            
-            vida = 4;
-            muerto = true;
- 
-            String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
-            JOptionPane.showMessageDialog(null,
-                    "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
-                    JOptionPane.PLAIN_MESSAGE);
-                //reinicio = true;
- 
-            try {
- 
-                      //leeArchivo();    //lee el contenido del archivo
-                //Agrega el contenido del nuevo puntaje al vector.
-                vec.add(new Puntaje(nombre, score));
-                ordenaVector();
-                //Graba el vector en el archivo.
-                grabaArchivo();
- 
-            } catch (IOException e) {
- 
-                System.out.println("Error en " + e.toString());
-            }
- 
-        }*/
 
         //para que el ammo salga cada 15 segundos
         if (((int) tiemporeal) % 15 == 0) {
@@ -477,27 +443,28 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             if (i == 0 || i == 1 || i == 2 || i == 3) {
                 Malo davidj = (Malo) lista.get(i);
                 if (davidj.getllego()) {
-
+                    inx = ((int) (Math.random() * (MAX - MIN))) + MIN;
+                    iny = ((int) (Math.random() * (MAX - MIN))) + MIN;
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
-                        davidj.setPosX(davidj.getPosX() + incX);
+                        davidj.setPosX(davidj.getPosX() + incX+inx);                        
                     } else {
 
                         incX = -1;
                         davidj.setFlechitas(4);
-                        davidj.setPosX(davidj.getPosX() + incX);
+                        davidj.setPosX(davidj.getPosX() + incX+inx);
                     }
 
                     if (jack.getPosY() > davidj.getPosY()) {
 
                         incY = 1;
                         davidj.setFlechitas(1);
-                        davidj.setPosY(davidj.getPosY() + incY);
+                        davidj.setPosY(davidj.getPosY() + incY+iny);
                     } else {
                         incY = -1;
                         davidj.setFlechitas(2);
-                        davidj.setPosY(davidj.getPosY() + incY);
+                        davidj.setPosY(davidj.getPosY() + incY+iny);
                     }
                 }
 
@@ -505,52 +472,56 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             if (i == 4 || i == 5 || i == 6 || i == 7) {
                 Malo davidj = (Malo) lista.get(i);
                 if (davidj.getllego()) {
+                    inx = ((int) (Math.random() * (MAX - MIN))) + MIN;
+                    iny = ((int) (Math.random() * (MAX - MIN))) + MIN;
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
-                        davidj.setPosX(davidj.getPosX() + incX);
+                        davidj.setPosX(davidj.getPosX() + incX+inx);
                     } else {
 
                         incX = -1;
                         davidj.setFlechitas(4);
-                        davidj.setPosX(davidj.getPosX() + incX);
+                        davidj.setPosX(davidj.getPosX() + incX+inx);
                     }
 
                     if (jack.getPosY() > davidj.getPosY()) {
 
                         incY = 1;
                         davidj.setFlechitas(1);
-                        davidj.setPosY(davidj.getPosY() + incY);
+                        davidj.setPosY(davidj.getPosY() + incY+iny);
                     } else {
                         incY = -1;
                         davidj.setFlechitas(2);
-                        davidj.setPosY(davidj.getPosY() + incY);
+                        davidj.setPosY(davidj.getPosY() + incY+iny);
                     }
                 }
             }
             if (i == 8 || i == 9 || i == 10 || i == 11) {
                 Malo davidj = (Malo) lista.get(i);
                 if (davidj.getllego()) {
+                    inx = ((int) (Math.random() * (MAX - MIN))) + MIN;
+                    iny = ((int) (Math.random() * (MAX - MIN))) + MIN;
                     if (jack.getPosX() > davidj.getPosX()) {
                         incX = 1;
                         davidj.setFlechitas(3);
-                        davidj.setPosX(davidj.getPosX() + incX);
+                        davidj.setPosX(davidj.getPosX() + incX+inx);
                     } else {
 
                         incX = -1;
                         davidj.setFlechitas(4);
-                        davidj.setPosX(davidj.getPosX() + incX);
+                        davidj.setPosX(davidj.getPosX() + incX+inx);
                     }
 
                     if (jack.getPosY() > davidj.getPosY()) {
 
                         incY = 1;
                         davidj.setFlechitas(1);
-                        davidj.setPosY(davidj.getPosY() + incY);
+                        davidj.setPosY(davidj.getPosY() + incY+iny);
                     } else {
                         incY = -1;
                         davidj.setFlechitas(2);
-                        davidj.setPosY(davidj.getPosY() + incY);
+                        davidj.setPosY(davidj.getPosY() + incY+iny);
                     }
                 }
 
@@ -651,24 +622,22 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
                 bomb.play();    //sonido al colisionar
                 vida--;
-                if ((davidj.getPosY() + davidj.getAlto() - 3) < jack.getPosY()){
+                if ((davidj.getPosY() + davidj.getAlto() - 3) < jack.getPosY()) {
                     davidj.setPosY(davidj.getPosY() - 50);
                 }
-                
-                if ((davidj.getPosY() + 3) > jack.getPosY()){
+
+                if ((davidj.getPosY() + 3) > jack.getPosY()) {
                     davidj.setPosY(davidj.getPosY() + 50);
                 }
-                
-                if ((davidj.getPosX() + davidj.getAncho() - 3) < jack.getPosX()){
+
+                if ((davidj.getPosX() + davidj.getAncho() - 3) < jack.getPosX()) {
                     davidj.setPosX(davidj.getPosX() - 50);
                 }
-                
-                
-                if ((davidj.getPosX() + 3) > jack.getPosX()){
+
+                if ((davidj.getPosX() + 3) > jack.getPosX()) {
                     davidj.setPosX(davidj.getPosX() + 50);
                 }
 
-                
             }
             if (bala != null) {
                 if (bala.intersecta(davidj)) {
@@ -679,9 +648,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     bala = null;
                     balaviva = false;
                     movbala = false;
-                    lista.remove();
+                    lista.remove(i);
                     randomo = ((int) (Math.random() * (4 - 1) + 1));
-                    
 
                 }
             }
@@ -698,30 +666,29 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         }
 
     }
-    
-    
-    public void Muerto(){
+
+    public void Muerto() {
         creaJFrame();
-        
-       String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
-            JOptionPane.showMessageDialog(null,
-                    "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
-                    JOptionPane.PLAIN_MESSAGE);
-                //reinicio = true;
- 
-            try {
- 
-                      //leeArchivo();    //lee el contenido del archivo
-                //Agrega el contenido del nuevo puntaje al vector.
-                vec.add(new Puntaje(nombre, score));
-                ordenaVector();
-                //Graba el vector en el archivo.
-                grabaArchivo();
- 
-            } catch (IOException e) {
- 
-                System.out.println("Error en " + e.toString());
-            }
+
+        String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
+        JOptionPane.showMessageDialog(null,
+                "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
+                JOptionPane.PLAIN_MESSAGE);
+        //reinicio = true;
+
+        try {
+
+            //leeArchivo();    //lee el contenido del archivo
+            //Agrega el contenido del nuevo puntaje al vector.
+            vec.add(new Puntaje(nombre, score));
+            ordenaVector();
+            //Graba el vector en el archivo.
+            grabaArchivo();
+
+        } catch (IOException e) {
+
+            System.out.println("Error en " + e.toString());
+        }
     }
 
     public void paint(Graphics g) {
@@ -785,9 +752,9 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             pausa = true;
             g.drawImage(gameover, 150, 0, this);
             /*if(!nootravez){
-                Muerto();
-                nootravez = true;
-            }*/
+             Muerto();
+             nootravez = true;
+             }*/
         }
 
         //g.drawString("Vidas: " + vidas, 10, 20);
@@ -795,18 +762,18 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             g.drawString("Score: " + score, 250, 50);
             g.drawString("ammo: " + ammo, 400, 50);
             g.drawString("tiempo: " + (int) tiemporeal, 780, 50);
-            g.drawString("Vida: " + (vida - 1) , jack.getPosX(), jack.getPosY() - 10);
+            g.drawString("Vida: " + (vida - 1), jack.getPosX(), jack.getPosY() - 10);
         }
 
     }
-    
-     /**
+
+    /**
      * Metodo que lee a informacion de un archivo y lo agrega a un vector.
      *
      * @throws IOException
      */
     public void leeArchivo() throws IOException {
- 
+
         BufferedReader fileIn;
         try {
             fileIn = new BufferedReader(new FileReader(nombreArchivo));
@@ -819,7 +786,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             fileIn = new BufferedReader(new FileReader(nombreArchivo));
         }
         String dato = fileIn.readLine();
- 
+
         if (!dato.equals("")) {
             while (dato != null) {
                 arr = dato.split(",");
@@ -830,7 +797,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             }
         }
         fileIn.close();
- 
+
         /*
          try
          {
@@ -880,14 +847,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
        
          */
     }
- 
+
     /**
      * Metodo que agrega la informacion del vector al archivo.
      *
      * @throws IOException
      */
     public void grabaArchivo() throws IOException {
- 
+
         //if(guardar) {
         PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
         for (int i = 0; i < vec.size(); i++) {
@@ -901,11 +868,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
          fileOut.println(""+velocidadx+","+velocidady+","+angulo+","+tiempo+","+vidas+","+magikarp.getPosX()+","+magikarp.getPosY()+","+pipeup.getPosX()+","+pipeup.getPosY());
          fileOut.close();
          */
-           // guardar = false;
+        // guardar = false;
         //}
- 
+
     }
- 
+
     /**
      * Metodo que ordena el vector
      */
@@ -920,7 +887,6 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             }
         }
     }
-    
 
     public void keyPressed(KeyEvent e) {
 
@@ -933,12 +899,12 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-           if(!balaviva){
-               bal = true;
-           }
-            
+            if (!balaviva) {
+                bal = true;
+            }
+
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_N) //Presiono flecha arriba
         {
             jframeScore.setVisible(true);
@@ -1049,16 +1015,16 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
          clic = true;
          }*/
     }
-    
+
     /**
      * Metodo que crea el frame para desplegar el score.
      */
     public void creaJFrame() {
         jframeScore = new JFrameScore();
     }
- 
+
     private class JFrameScore extends JFrame {
- 
+
         public JFrameScore() {
             JButton boton = new JButton("SALIR");
             listaScore = new JList(vec);
@@ -1067,16 +1033,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             setSize(200, 500);
             boton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                                                //pause = false;
+                    //pause = false;
                     //musica.play();
                     setVisible(false);
                     repaint();
                 }
             });
- 
+
         }
     }
-    
-    
 
 }
