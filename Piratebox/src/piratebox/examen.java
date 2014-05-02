@@ -577,25 +577,24 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
                 bomb.play();    //sonido al colisionar
                 vida--;
-                lista.remove();
+                if ((davidj.getPosY() + davidj.getAlto() - 3) < jack.getPosY()){
+                    davidj.setPosY(davidj.getPosY() - 50);
+                }
+                
+                if ((davidj.getPosY() + 3) > jack.getPosY()){
+                    davidj.setPosY(davidj.getPosY() + 50);
+                }
+                
+                if ((davidj.getPosX() + davidj.getAncho() - 3) < jack.getPosX()){
+                    davidj.setPosX(davidj.getPosX() - 50);
+                }
+                
+                
+                if ((davidj.getPosX() + 3) > jack.getPosX()){
+                    davidj.setPosX(davidj.getPosX() + 50);
+                }
 
-                //Los asteroides aparecen en un rando random
-                randomo = ((int) (Math.random() * (4 - 1) + 1));
-                if (randomo == 1) {
-                    random = ((int) ((Math.random() * (129 - 76)) + 76));
-                    davidj.setPosX(random);
-                    davidj.setPosY(110);
-                }
-                if (randomo == 2) {
-                    random2 = ((int) ((Math.random() * (632 - 576)) + 576));
-                    davidj.setPosX(random2);
-                    davidj.setPosY(110);
-                }
-                if (randomo == 3) {
-                    random3 = ((int) ((Math.random() * (1007 - 948)) + 948));
-                    davidj.setPosX(random3);
-                    davidj.setPosY(110);
-                }
+                
             }
             if (bala != null) {
                 if (bala.intersecta(davidj)) {
@@ -608,21 +607,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     movbala = false;
                     lista.remove();
                     randomo = ((int) (Math.random() * (4 - 1) + 1));
-                    if (randomo == 1) {
-                        random = ((int) ((Math.random() * (129 - 76)) + 76));
-                        davidj.setPosX(random);
-                        davidj.setPosY(110);
-                    }
-                    if (randomo == 2) {
-                        random2 = ((int) ((Math.random() * (632 - 576)) + 576));
-                        davidj.setPosX(random2);
-                        davidj.setPosY(110);
-                    }
-                    if (randomo == 3) {
-                        random3 = ((int) ((Math.random() * (1007 - 948)) + 948));
-                        davidj.setPosX(random3);
-                        davidj.setPosY(110);
-                    }
+                    
 
                 }
             }
@@ -660,7 +645,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void paint1(Graphics g) {
-        if (vida > 0) {
+        if (vidas > 0) {
             if (!start) {
                 g.drawImage(inicio, 0, 0, null);
 
@@ -723,7 +708,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            bal = true;
+           if(!balaviva){
+               bal = true;
+           }
+            
         }
 
         if (e.getKeyCode() == KeyEvent.VK_UP) //Presiono flecha arriba
