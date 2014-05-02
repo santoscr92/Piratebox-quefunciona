@@ -1,8 +1,8 @@
 40,tony2
-35,David
+40,juan es gay
 35,null
+35,David
 20,tony1
-0,null
 0,david
 0,null
 0,null
@@ -19,3 +19,9 @@
 0,jbpu
 0,iqervg
 0,iuegdf
+0,null
+0,wdsf
+0,sdasd
+0,asdas
+0,asdasdasdasd
+0,null

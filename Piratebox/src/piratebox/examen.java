@@ -783,7 +783,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         } else {
             setBackground(Color.black);
             pausa = true;
-            g.drawImage(gameover, 0, 0, this);
+            g.drawImage(gameover, 150, 0, this);
             /*if(!nootravez){
                 Muerto();
                 nootravez = true;
@@ -795,7 +795,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             g.drawString("Score: " + score, 250, 50);
             g.drawString("ammo: " + ammo, 400, 50);
             g.drawString("tiempo: " + (int) tiemporeal, 780, 50);
-            g.drawString("Vida: " + vida, jack.getPosX(), jack.getPosY() - 10);
+            g.drawString("Vida: " + (vida - 1) , jack.getPosX(), jack.getPosY() - 10);
         }
 
     }
