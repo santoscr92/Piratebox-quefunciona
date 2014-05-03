@@ -69,7 +69,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private int ancho;  //Ancho del jackimage
     private int alto;   //Alto del jackimage
     private ImageIcon jackimage; // Imagen del jackimage.
-    private boolean clic = false;
+    private boolean clic;
     private int random;
     private int incX, incY, inx, iny;
     private long tiempoActual;
@@ -77,6 +77,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean start;
     private boolean howt;
     private boolean back;
+
     private double tiemporeal;
     private SoundClip shot;
     private SoundClip guncock;
@@ -85,7 +86,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     //bala
     private Bala bala; //objeto bala
     private int jackcurrentstate; // saber en que direccion se quedo jack
-    private int ammo = 10;
+    private int ammo;
     private boolean bal, balaviva, movbala;
     private int velocidadbalax, velocidadbalay;
     private int randomo;
@@ -94,18 +95,18 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     //malos
     private int x1; // posicion del mouse en x
     private int y1; // posicion del mouse en y
-    private int vidas = 5;
+    private int vidas;
     private LinkedList lista, listo;
-    private int score = 0;
-    private boolean pausa = false;
-    private boolean bsettings = false;
-    private boolean bhowto = false;
-    private boolean bmenu = false;
-    private boolean chocoabajo = false;
-    private boolean chocoalado = false;
+    private int score;
+    private boolean pausa;
+    private boolean bsettings;
+    private boolean bhowto;
+    private boolean bmenu;
+    private boolean chocoabajo;
+    private boolean chocoalado;
     private boolean up, down, left, right;
-    private boolean activado = false;
-    private boolean valp = true, valh = true, valm = true, vals = true;
+    private boolean activado;
+    private boolean valp, valh, valm, vals;
 
     // variables para vida
     private int vida;
@@ -120,9 +121,13 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     //ammo
     private Ammo objetoammo;
 
-    private boolean llego = false;
+    private boolean llego;
     private int random2;
     private int random3;
+    
+    //bosses
+    private boolean tbr;
+    private TBR tonybr;
 
     //variables para el manejo de archivos
     private Vector vec;    // Objeto vector para agregar el puntaje.
@@ -140,12 +145,31 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void init() {
-
+        tiemporeal = 0;
+        clic = false;
+        ammo = 10;
+        vidas = 5;
+        score = 0;
+        pausa = false;
+        bsettings = false;
+        bhowto = false;
+        bmenu = false;
+        chocoabajo = false;
+        chocoalado = false;
+        activado = false;
+        valp = true;
+        valh = true;
+        valm = true;
+        vals = true;
+        llego = false;
         this.setSize(1200, 700);
         move = false;
         start = false;
         howt = false;
         back = false;
+        tbr = false;
+       
+        
         int posX = getWidth() / 2;    // posicion en x es un cuarto del applet
         int posY = getHeight() / 2;    // posicion en y es un cuarto del applet  
         guncock = new SoundClip("Sonidos/guncock.wav");
@@ -278,12 +302,15 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             }
 
         }
+        
+        
+        
 
         jackcurrentstate = 2;
         vida = 5;
         espaciovida = false;
-        velocidadbalax = 15;
-        velocidadbalay = 15;
+        velocidadbalax = 30;
+        velocidadbalay = 30;
 
         try {
 
@@ -301,6 +328,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         Thread th = new Thread(this);
         // Empieza el hilo
         th.start();
+    }
+    
+    public void TBR(){
+        tonybr = new TBR(getWidth()/2, 200 , 1);
     }
 
     public void run() {
@@ -326,7 +357,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             Muerto();
             vida--;
         }
-
+        
         //para que el ammo salga cada 15 segundos
         if (((int) tiemporeal) % 15 == 0) {
             randomammo = ((int) ((Math.random() * (5 - 1)) + 1));
@@ -355,6 +386,20 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
 
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
+        
+        
+        //inicializa TBR
+        if(lista.size() == 0){
+            tbr = true;
+        }
+        
+        if(tbr){
+            TBR();
+        }
+        
+        if (tbr) {
+            tonybr.actualizaAnimacion(tiempoActual);
+        }
 
         //objetoammo.actualizaAnimacion(tiempoActual);
         //actualizacion de jack si esta en movimiento
@@ -746,6 +791,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 if (bala != null) {
                     g.drawImage(bala.getImagenI(), bala.getPosX(), bala.getPosY(), this);
                 }
+                
+                if(tonybr != null){
+                    g.drawImage(tonybr.getImagenI(), tonybr.getPosX(), tonybr.getPosY(), this);
+                }
+                
                 g.drawString("Score: " + score, 250, 50);
                 g.drawString("ammo: " + ammo, 400, 50);
                 g.drawString("tiempo: " + (int) tiemporeal, 780, 50);
@@ -926,22 +976,24 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         y1 = e.getY();
         if (play.contains(x1, y1)) {
             start = true;
-        } else if (how.contains(x1, y1)) {
+        } 
+        
+        else if (how.contains(x1, y1)) {
             howt = true;
-        }
-        if (howt) {
-            Rectangle atras = new Rectangle(483, 627, 207, 53);
-            if (atras.contains(x1, y1)) {
-                howt = false;
-            }
 
         }
+    
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
     }
 
+    /**
+     *
+     * @param e
+     */
+    @Override
     public void mouseDragged(MouseEvent e) {
     }
 
