@@ -20,7 +20,16 @@ public class TBR extends Base {
 	 */
     
          private static int conteo = 0;
-         private int vida = 50;
+         private int vida = 50,velocidad = 5;
+         
+         
+         public void setVelocidad(int vel){
+             velocidad = vel;
+         }
+         
+         public int getVelocidad(){
+             return velocidad;  
+         }
          
          public void setVida(int v){
              vida = v;
@@ -58,7 +67,7 @@ public class TBR extends Base {
                 if(flechitas==1 ){
                  Image bomba1,bomba2,bomba3;
                  bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/tbrdown.png"));
-                // bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente2.png"));
+                 //bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente2.png"));
                  //bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente3.png"));
                  
                  anim = new Animacion();

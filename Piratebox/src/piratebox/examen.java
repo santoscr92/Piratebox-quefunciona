@@ -121,7 +121,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     //ammo
     private Ammo objetoammo;
 
-    private boolean llego;
+    private boolean llego,mov;
     private int random2;
     private int random3;
     
@@ -331,9 +331,9 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
     
     public void TBR(){
-        tonybr = new TBR(getWidth()/2, 200 , 1);
+        tonybr = new TBR(600, 30 , 1);
     }
-
+       
     public void run() {
         while (vida > 0) {
             if (start && !pausa) {
@@ -389,17 +389,32 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         
         
         //inicializa TBR
-        if(lista.size() == 0){
+        if(lista.size() == 0 && !tbr){
             tbr = true;
         }
         
         if(tbr){
             TBR();
+            tbr = false;
+        }
+       
+        if (tonybr != null) {
+            tonybr.actualizaAnimacion(tiempoActual);
+            if(tonybr.getPosX() + tonybr.getAncho() >= 1000){
+                tonybr.setVelocidad(-5);           
+            }
+            
+            
+            if(tonybr.getPosX() <= 20){
+                tonybr.setVelocidad(5);             
+            }
+            
+            tonybr.setPosX(tonybr.getPosX() + 100);
+            vida++;
+            
+            
         }
         
-        if (tbr) {
-            tonybr.actualizaAnimacion(tiempoActual);
-        }
 
         //objetoammo.actualizaAnimacion(tiempoActual);
         //actualizacion de jack si esta en movimiento
