@@ -731,11 +731,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             }
         }
         
-        if(tonybr != null){
+       /* if(tonybr != null){
             if(bala.intersecta(tonybr)){
-                
+                tonybr.setVida(tonybr.getVida() - 1);
             }
-        }
+        }*/
 
     }
 
