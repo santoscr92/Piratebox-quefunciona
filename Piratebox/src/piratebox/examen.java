@@ -104,6 +104,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean bmenu;
     private boolean chocoabajo;
     private boolean chocoalado;
+    private boolean creo, creu;
+    private int vidatbr, vidamala;
     private boolean up, down, left, right;
     private boolean activado;
     private boolean valp, valh, valm, vals;
@@ -126,9 +128,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private int random3;
     
     //TBR THA BOSS
-    private boolean tbr,inicializaciontbr,tbrbalaviva,tbrbala;
+    private boolean tbr,inicializaciontbr,inicializacionmalo,tbrbalaviva,tbrbala,malobr;
     private TBR tonybr;
+    private Malo2 malo;
     private int timer;
+    private Balathermo balathermo;
     
 
     //variables para el manejo de archivos
@@ -149,6 +153,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     public void init() {
         tbr = false;
         inicializaciontbr = false;
+        inicializacionmalo = false;
         tiemporeal = 0;
         clic = false;
         ammo = 10;
@@ -160,13 +165,17 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         bmenu = false;
         chocoabajo = false;
         chocoalado = false;
+        vidatbr = 20;
+        vidamala = 40;
+        creo = false;
+        creu = false;
         activado = false;
         valp = true;
         valh = true;
         valm = true;
         vals = true;
         llego = false;
-        this.setSize(1200, 670);
+        this.setSize(1200, 700);
         move = false;
         start = false;
         howt = false;
@@ -337,6 +346,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     public void TBR(){
         tonybr = new TBR(600, 30 , 1);
     }
+    
+    public void Malo2() {
+        malo = new Malo2(600, 30, 1);
+    }
        
     public void run() {
         while (vida > 0) {
@@ -360,6 +373,88 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         if (vida == 1) {
             Muerto();
             vida--;
+        }
+        if (vidamala == 0) {
+            int posrX = (int) (Math.random() * (getWidth() / 4)) + getWidth() / 2;    //posision x es tres cuartos del applet
+            int posrY = 100;    //posision y es tres cuartos del applet
+            // crear la nueva lista
+            //quitar el boss
+            malo = null;
+            if (!creu) {
+                for (int k = 0; k < 12; k++) {
+ 
+                    random = ((int) ((Math.random() * (129 - 76)) + 76));
+                    random2 = ((int) ((Math.random() * (632 - 576)) + 576));
+                    random3 = ((int) ((Math.random() * (1007 - 948)) + 948));
+                    int posaY = 0;    //posision x es tres cuartos del applet
+                    //int posaY = (int) (Math.random() * (getHeight() / 4)) + getHeight() / 2;    //posision y es tres cuartos del applet
+                    int posaX = (int) (Math.random() * (getWidth() / 4)) + getWidth() / 2;
+                    URL aURL = this.getClass().getResource("Imagenes/muerto.png");
+                    if (k == 0 || k == 1 || k == 2 || k == 3) {
+                        davidj = new Malo(random, posrY, 1);
+                        davidj.setPosX(davidj.getPosX() - davidj.getAncho());
+                        davidj.setPosY(davidj.getPosY() - davidj.getAlto());
+                        lista.addLast(davidj);
+                    }
+ 
+                    if (k == 4 || k == 5 || k == 6 || k == 7) {
+                        davidj = new Malo(random2, posrY, 1);
+                        davidj.setPosX(davidj.getPosX() - davidj.getAncho());
+                        davidj.setPosY(davidj.getPosY() - davidj.getAlto());
+                        lista.addLast(davidj);
+ 
+                    }
+                    if (k == 8 || k == 9 || k == 10 || k == 11) {
+                        davidj = new Malo(random3, posrY, 1);
+                        davidj.setPosX(davidj.getPosX() - davidj.getAncho());
+                        davidj.setPosY(davidj.getPosY() - davidj.getAlto());
+                        lista.addLast(davidj);
+                    }
+                }
+                creu = true;
+            }
+ 
+        }
+        if (vidatbr == 0) {
+            int posrX = (int) (Math.random() * (getWidth() / 4)) + getWidth() / 2;    //posision x es tres cuartos del applet
+            int posrY = 100;    //posision y es tres cuartos del applet
+            // crear la nueva lista
+            //quitar el boss
+            tonybr = null;
+            if (!creo) {
+                for (int k = 0; k < 12; k++) {
+ 
+                    random = ((int) ((Math.random() * (129 - 76)) + 76));
+                    random2 = ((int) ((Math.random() * (632 - 576)) + 576));
+                    random3 = ((int) ((Math.random() * (1007 - 948)) + 948));
+                    int posaY = 0;    //posision x es tres cuartos del applet
+                    //int posaY = (int) (Math.random() * (getHeight() / 4)) + getHeight() / 2;    //posision y es tres cuartos del applet
+                    int posaX = (int) (Math.random() * (getWidth() / 4)) + getWidth() / 2;
+                    URL aURL = this.getClass().getResource("Imagenes/muerto.png");
+                    if (k == 0 || k == 1 || k == 2 || k == 3) {
+                        davidj = new Malo(random, posrY, 1);
+                        davidj.setPosX(davidj.getPosX() - davidj.getAncho());
+                        davidj.setPosY(davidj.getPosY() - davidj.getAlto());
+                        lista.addLast(davidj);
+                    }
+ 
+                    if (k == 4 || k == 5 || k == 6 || k == 7) {
+                        davidj = new Malo(random2, posrY, 1);
+                        davidj.setPosX(davidj.getPosX() - davidj.getAncho());
+                        davidj.setPosY(davidj.getPosY() - davidj.getAlto());
+                        lista.addLast(davidj);
+ 
+                    }
+                    if (k == 8 || k == 9 || k == 10 || k == 11) {
+                        davidj = new Malo(random3, posrY, 1);
+                        davidj.setPosX(davidj.getPosX() - davidj.getAncho());
+                        davidj.setPosY(davidj.getPosY() - davidj.getAlto());
+                        lista.addLast(davidj);
+                    }
+                }
+                creo = true;
+            }
+ 
         }
         
         //para que el ammo salga cada 15 segundos
@@ -402,19 +497,82 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             tbr = false;
             inicializaciontbr = true;
         }
+        
+        if (lista.size() == 0 && tonybr == null && !inicializacionmalo) {
+            malobr = true;
+        }
+        if (malobr) {
+            Malo2();
+            malobr = false;
+            inicializacionmalo = true;
+        }
+        if (malo != null) {
+            malo.actualizaAnimacion(tiempoActual);
+            inx = ((int) (Math.random() * (MAX - MIN))) + MIN;
+            iny = ((int) (Math.random() * (MAX - MIN))) + MIN;
+ 
+            if (jack.getPosX() > malo.getPosX()) {
+                incX = 1;
+                malo.setFlechitas(3);
+                malo.setPosX(malo.getPosX() + incX + inx);
+            } else {
+ 
+                incX = -1;
+                malo.setFlechitas(4);
+                malo.setPosX(malo.getPosX() + incX + inx);
+            }
+ 
+            if (jack.getPosY() > malo.getPosY()) {
+ 
+                incY = 1;
+                malo.setFlechitas(1);
+                malo.setPosY(malo.getPosY() + incY + iny);
+            } else {
+                incY = -1;
+                malo.setFlechitas(2);
+                malo.setPosY(malo.getPosY() + incY + iny);
+            }
+        }
        
         if (tonybr != null) {
             tonybr.actualizaAnimacion(tiempoActual);
-            if(tonybr.getPosX() + tonybr.getAncho() >= 1100){
-                tonybr.setVelocidad(-5);           
+           inx = ((int) (Math.random() * (MAX - MIN))) + MIN;
+            iny = ((int) (Math.random() * (MAX - MIN))) + MIN;
+ 
+            if (jack.getPosX() > tonybr.getPosX()) {
+                incX = 1;
+                tonybr.setFlechitas(3);
+                tonybr.setPosX(tonybr.getPosX() + incX + inx);
+            } else {
+ 
+                incX = -1;
+                tonybr.setFlechitas(4);
+                tonybr.setPosX(tonybr.getPosX() + incX + inx);
             }
-            
-            if(tonybr.getPosX() <= 20){
-                tonybr.setVelocidad(5);             
+ 
+            if (jack.getPosY() > tonybr.getPosY()) {
+ 
+                incY = 1;
+                tonybr.setFlechitas(1);
+                tonybr.setPosY(tonybr.getPosY() + incY + iny);
+            } 
+            else {
+                incY = -1;
+                tonybr.setFlechitas(2);
+                tonybr.setPosY(tonybr.getPosY() + incY + iny);
             }
+ 
+               if (!tbrbalaviva) {
+                    balathermo = new Balathermo(tonybr.getPosX() + (tonybr.getAncho() / 2), tonybr.getPosY() + 25, 4);
+                    shot.play();
+                    tbrbalaviva = true;
+                }
+               if(balathermo != null){
+                   balathermo.setPosY(balathermo.getPosY() + 30);
+                    balathermo.actualizaAnimacion(tiempoActual);
+               }
+        
             
-            //jack.setPosX(jack.getPosX() + incX);
-            tonybr.setPosX(tonybr.getPosX() + tonybr.getVelocidad());   
         }
         
 
@@ -680,6 +838,29 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 //bala = null;
             }
         }
+        
+        // si la bala sale del frame balaviva = false
+        if (balathermo != null) {
+            if (balathermo.getPosX() > getWidth()) {
+                tbrbalaviva = false;
+                //bala = null;
+            }
+
+            if (balathermo.getPosX() < 0) {
+                tbrbalaviva = false;
+                //bala = null;
+            }
+
+            if (balathermo.getPosY() > getHeight()) {
+                tbrbalaviva = false;
+                //bala = null;
+            }
+
+            if (balathermo.getPosY() < 0) {
+                tbrbalaviva = false;
+                //bala = null;
+            }
+        }
 
         for (int i = 0; i < lista.size(); i++) {
             Malo davidj = (Malo) lista.get(i);
@@ -720,6 +901,73 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 }
             }
 
+        }
+        
+        if (tonybr != null) {
+            if (jack.intersecta(tonybr)) {
+                vidatbr--;
+                vida--;
+                if ((tonybr.getPosY() + tonybr.getAlto() - 3) < jack.getPosY()) {
+                    tonybr.setPosY(tonybr.getPosY() - 500);
+                }
+ 
+                if ((tonybr.getPosY() + 3) > jack.getPosY()) {
+                    tonybr.setPosY(tonybr.getPosY() + 500);
+                }
+ 
+                if ((tonybr.getPosX() + tonybr.getAncho() - 3) < jack.getPosX()) {
+                    tonybr.setPosX(tonybr.getPosX() - 500);
+                }
+ 
+                if ((tonybr.getPosX() + 3) > jack.getPosX()) {
+                    tonybr.setPosX(tonybr.getPosX() + 500);
+                }
+ 
+            }
+            if (bala != null) {
+                if (bala.intersecta(tonybr)) {
+ 
+                    score += 5;
+                    //Los asteroides aparecen en un rando random
+                    vidatbr--;
+                    bala = null;
+                    balaviva = false;
+                    movbala = false;
+                }
+            }
+        }
+        if (malo != null) {
+            if (jack.intersecta(malo)) {
+                vidamala--;
+                vida--;
+                if ((malo.getPosY() + malo.getAlto() - 3) < jack.getPosY()) {
+                    tonybr.setPosY(tonybr.getPosY() - 500);
+                }
+ 
+                if ((malo.getPosY() + 3) > jack.getPosY()) {
+                    malo.setPosY(malo.getPosY() + 500);
+                }
+ 
+                if ((malo.getPosX() + malo.getAncho() - 3) < jack.getPosX()) {
+                    malo.setPosX(malo.getPosX() - 500);
+                }
+ 
+                if ((malo.getPosX() + 3) > jack.getPosX()) {
+                    malo.setPosX(malo.getPosX() + 500);
+                }
+ 
+            }
+            if (bala != null) {
+                if (bala.intersecta(malo)) {
+ 
+                    score += 5;
+                    //Los asteroides aparecen en un rando random
+                    vidamala--;
+                    bala = null;
+                    balaviva = false;
+                    movbala = false;
+                }
+            }
         }
 
         if (objetoammo != null) {
@@ -817,6 +1065,14 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 
                 if(tonybr != null){
                     g.drawImage(tonybr.getImagenI(), tonybr.getPosX(), tonybr.getPosY(), this);
+                }
+                
+                if (malo != null) {
+                    g.drawImage(malo.getImagenI(), malo.getPosX(), malo.getPosY(), this);
+                }
+                
+                if (balathermo != null) {
+                    g.drawImage(balathermo.getImagenI(), balathermo.getPosX(), balathermo.getPosY(), this);
                 }
                 
                 g.drawString("Score: " + score, 250, 50);
