@@ -125,9 +125,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private int random2;
     private int random3;
     
-    //bosses
-    private boolean tbr;
+    //TBR THA BOSS
+    private boolean tbr,inicializaciontbr,tbrbalaviva,tbrbala;
     private TBR tonybr;
+    private int timer;
+    
 
     //variables para el manejo de archivos
     private Vector vec;    // Objeto vector para agregar el puntaje.
@@ -145,6 +147,8 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     }
 
     public void init() {
+        tbr = false;
+        inicializaciontbr = false;
         tiemporeal = 0;
         clic = false;
         ammo = 10;
@@ -388,31 +392,29 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         tiempoActual += tiempoTranscurrido;
         
         
-        //inicializa TBR
-        if(lista.size() == 0 && !tbr){
+        //inicializa TBR tha Boss
+        if(lista.size() == 0 && !inicializaciontbr){
             tbr = true;
         }
         
         if(tbr){
             TBR();
             tbr = false;
+            inicializaciontbr = true;
         }
        
         if (tonybr != null) {
             tonybr.actualizaAnimacion(tiempoActual);
-            if(tonybr.getPosX() + tonybr.getAncho() >= 1000){
+            if(tonybr.getPosX() + tonybr.getAncho() >= 1100){
                 tonybr.setVelocidad(-5);           
             }
-            
             
             if(tonybr.getPosX() <= 20){
                 tonybr.setVelocidad(5);             
             }
             
-            tonybr.setPosX(tonybr.getPosX() + 100);
-            vida++;
-            
-            
+            //jack.setPosX(jack.getPosX() + incX);
+            tonybr.setPosX(tonybr.getPosX() + tonybr.getVelocidad());   
         }
         
 
@@ -726,6 +728,12 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 objetoammo = null;
                 ammopalma = false;
                 guncock.play();
+            }
+        }
+        
+        if(tonybr != null){
+            if(bala.intersecta(tonybr)){
+                
             }
         }
 
