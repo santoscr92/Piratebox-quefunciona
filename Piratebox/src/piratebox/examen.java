@@ -166,7 +166,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         valm = true;
         vals = true;
         llego = false;
-        this.setSize(1200, 700);
+        this.setSize(1200, 670);
         move = false;
         start = false;
         howt = false;
