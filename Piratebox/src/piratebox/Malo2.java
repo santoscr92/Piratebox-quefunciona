@@ -49,9 +49,9 @@ public class Malo2 extends Base {
                 //
                 if(flechitas==1 ){
                  Image bomba1,bomba2,bomba3;
-                 bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente1.png"));
-                 bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente2.png"));
-                 bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente3.png"));
+                 bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/b3d1.png"));
+                 bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/b3d2.png"));
+                 bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/b3d3.png"));
                  
                  anim = new Animacion();
                  anim.sumaCuadro(bomba1, 100);

@@ -66,14 +66,14 @@ public class TBR extends Base {
                 //
                 if(flechitas==1 ){
                  Image bomba1,bomba2,bomba3;
-                 bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/tbrdown.png"));
-                 //bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente2.png"));
-                 //bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/mfrente3.png"));
+                 bomba1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/b2d1.png"));
+                 bomba2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/b2d2.png"));
+                 bomba3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Imagenes/b2d3.png"));
                  
                  anim = new Animacion();
                  anim.sumaCuadro(bomba1, 100);
-                 //anim.sumaCuadro(bomba2, 100);
-                 //anim.sumaCuadro(bomba3, 100);
+                 anim.sumaCuadro(bomba2, 100);
+                 anim.sumaCuadro(bomba3, 100);
                  
                 }
                 
