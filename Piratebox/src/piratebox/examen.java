@@ -997,13 +997,21 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         Rectangle how = new Rectangle(576, 583, 246, 69);
         x1 = e.getX();
         y1 = e.getY();
-        if (play.contains(x1, y1)) {
+        if (play.contains(x1, y1) && !howt) {
             start = true;
         } 
         
         else if (how.contains(x1, y1)) {
             howt = true;
 
+        }
+        
+        if (howt) {
+            Rectangle atras = new Rectangle(483, 627, 207, 53);
+            if (atras.contains(x1, y1)) {
+                howt = false;
+            }
+ 
         }
     
     }
