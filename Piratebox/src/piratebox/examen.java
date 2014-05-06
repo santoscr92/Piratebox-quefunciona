@@ -244,8 +244,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         sonido = new SoundClip("Sonidos/mice.wav");
         bomb = new SoundClip("Sonidos/Explosion.wav");
         teleport = new SoundClip("Sonidos/teleport.wav");
-        cancionF.setLooping(true);
-        cancionF.play();
+        
 
         //jackimage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(eURL));
         //ancho = jackimage.getIconWidth();
@@ -1385,6 +1384,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         y1 = e.getY();
         if (play.contains(x1, y1) && !howt) {
             start = true;
+            
+            cancionF.setLooping(true);
+            cancionF.play();
+            
         } 
         
         else if (how.contains(x1, y1)) {
