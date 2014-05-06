@@ -105,7 +105,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private boolean chocoabajo;
     private boolean chocoalado;
     private boolean creo, creu;
-    private int vidatbr, vidamala;
+    private int vidatbr, vidamala,vidamalo2;
     private boolean up, down, left, right;
     private boolean activado;
     private boolean valp, valh, valm, vals;
@@ -128,9 +128,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     private int random3;
     
     //TBR THA BOSS
-    private boolean tbr,inicializaciontbr,inicializacionmalo,tbrbalaviva,tbrbala,malobr;
+    private boolean tbr,inicializaciontbr,inicializacionmalo,inicializacionmalo2,tbrbalaviva,tbrbala,malobr,malo2br;
     private TBR tonybr;
     private Malo2 malo;
+    private boss3 Boss;
     private int timer;
     private Balathermo balathermo;
     
@@ -154,6 +155,11 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         tbr = false;
         inicializaciontbr = false;
         inicializacionmalo = false;
+        inicializacionmalo2 = true;
+        tbrbalaviva = false;
+        tbrbala = false;
+        malobr = false;
+        malo2br = false;
         tiemporeal = 0;
         clic = false;
         ammo = 10;
@@ -167,6 +173,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         chocoalado = false;
         vidatbr = 20;
         vidamala = 40;
+        vidamalo2 = 70;
         creo = false;
         creu = false;
         activado = false;
@@ -180,7 +187,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         start = false;
         howt = false;
         back = false;
-        tbr = false;
+        
        
         
         int posX = getWidth() / 2;    // posicion en x es un cuarto del applet
@@ -350,6 +357,12 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
     public void Malo2() {
         malo = new Malo2(600, 30, 1);
     }
+    
+    public void Malo3() {
+        Boss = new boss3(600, 30, 1);
+    }
+    
+    
        
     public void run() {
         while (vida > 0) {
@@ -380,6 +393,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             // crear la nueva lista
             //quitar el boss
             malo = null;
+            balathermo = null;
             if (!creu) {
                 for (int k = 0; k < 12; k++) {
  
@@ -412,6 +426,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     }
                 }
                 creu = true;
+                inicializacionmalo2 = false;
             }
  
         }
@@ -421,6 +436,7 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
             // crear la nueva lista
             //quitar el boss
             tonybr = null;
+            balathermo = null;
             if (!creo) {
                 for (int k = 0; k < 12; k++) {
  
@@ -501,6 +517,17 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
         if (lista.size() == 0 && tonybr == null && !inicializacionmalo) {
             malobr = true;
         }
+        
+        if (lista.size() == 0 && tonybr == null && !inicializacionmalo2) {
+            malo2br = true;
+        }
+        
+        if (malo2br) {
+            Malo3();
+            malo2br = false;
+            inicializacionmalo2 = true;
+        }
+        
         if (malobr) {
             Malo2();
             malobr = false;
@@ -532,6 +559,16 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 malo.setFlechitas(2);
                 malo.setPosY(malo.getPosY() + incY + iny);
             }
+            
+            if (!tbrbalaviva) {
+                    balathermo = new Balathermo(tonybr.getPosX() + (tonybr.getAncho() / 2), tonybr.getPosY() + 25, 4);
+                    shot.play();
+                    tbrbalaviva = true;
+                }
+               if(balathermo != null){
+                   balathermo.setPosY(balathermo.getPosY() + 30);
+                    balathermo.actualizaAnimacion(tiempoActual);
+               }
         }
        
         if (tonybr != null) {
@@ -564,6 +601,47 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
  
                if (!tbrbalaviva) {
                     balathermo = new Balathermo(tonybr.getPosX() + (tonybr.getAncho() / 2), tonybr.getPosY() + 25, 4);
+                    shot.play();
+                    tbrbalaviva = true;
+                }
+               if(balathermo != null){
+                   balathermo.setPosY(balathermo.getPosY() + 30);
+                    balathermo.actualizaAnimacion(tiempoActual);
+               }
+        
+            
+        }
+        
+        if (Boss != null) {
+            Boss.actualizaAnimacion(tiempoActual);
+           inx = ((int) (Math.random() * (MAX - MIN))) + MIN;
+            iny = ((int) (Math.random() * (MAX - MIN))) + MIN;
+ 
+            if (jack.getPosX() > Boss.getPosX()) {
+                incX = 1;
+                Boss.setFlechitas(3);
+                Boss.setPosX(Boss.getPosX() + incX + inx);
+            } else {
+ 
+                incX = -1;
+                Boss.setFlechitas(4);
+                Boss.setPosX(Boss.getPosX() + incX + inx);
+            }
+ 
+            if (jack.getPosY() > Boss.getPosY()) {
+ 
+                incY = 1;
+                Boss.setFlechitas(1);
+                Boss.setPosY(Boss.getPosY() + incY + iny);
+            } 
+            else {
+                incY = -1;
+                Boss.setFlechitas(2);
+                Boss.setPosY(Boss.getPosY() + incY + iny);
+            }
+ 
+               if (!tbrbalaviva) {
+                    balathermo = new Balathermo(Boss.getPosX() + (Boss.getAncho() / 2), Boss.getPosY() + 25, 4);
                     shot.play();
                     tbrbalaviva = true;
                 }
@@ -967,6 +1045,42 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                     balaviva = false;
                     movbala = false;
                 }
+                
+            }
+        }
+        
+        if (Boss != null) {
+            if (jack.intersecta(Boss)) {
+                vidamalo2--;
+                vida--;
+                if ((Boss.getPosY() + Boss.getAlto() - 3) < jack.getPosY()) {
+                    tonybr.setPosY(tonybr.getPosY() - 500);
+                }
+ 
+                if ((Boss.getPosY() + 3) > jack.getPosY()) {
+                    Boss.setPosY(Boss.getPosY() + 500);
+                }
+ 
+                if ((Boss.getPosX() + Boss.getAncho() - 3) < jack.getPosX()) {
+                    Boss.setPosX(Boss.getPosX() - 500);
+                }
+ 
+                if ((Boss.getPosX() + 3) > jack.getPosX()) {
+                    Boss.setPosX(Boss.getPosX() + 500);
+                }
+ 
+            }
+            if (bala != null) {
+                if (bala.intersecta(Boss)) {
+ 
+                    score += 5;
+                    //Los asteroides aparecen en un rando random
+                    vidamala--;
+                    bala = null;
+                    balaviva = false;
+                    movbala = false;
+                }
+                
             }
         }
 
@@ -1069,6 +1183,10 @@ public class examen extends JFrame implements Runnable, KeyListener, MouseListen
                 
                 if (malo != null) {
                     g.drawImage(malo.getImagenI(), malo.getPosX(), malo.getPosY(), this);
+                }
+                
+                if (Boss != null) {
+                    g.drawImage(Boss.getImagenI(), Boss.getPosX(), Boss.getPosY(), this);
                 }
                 
                 if (balathermo != null) {
