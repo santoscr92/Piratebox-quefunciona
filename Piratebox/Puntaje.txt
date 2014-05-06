@@ -1,8 +1,2 @@
-2575,
-920,null
-405,                              
-210,                        
-60,null
-55,null
-0,null
+690,null
 0,null
